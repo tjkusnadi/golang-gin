@@ -16,10 +16,12 @@ var Module = fx.Options(
 func Server(
 	lifecycle fx.Lifecycle,
 	handler base.Router,
+	logger base.Logger,
 ) {
 	lifecycle.Append(fx.Hook{
 		OnStart: func(context.Context) error {
 			go func() {
+				logger.Zap.Info("Starting application...")
 				handler.Gin.Run("localhost:3000")
 			}()
 			return nil
