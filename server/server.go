@@ -17,6 +17,7 @@ func Server(
 	lifecycle fx.Lifecycle,
 	handler base.Router,
 	logger base.Logger,
+	elasticsearch base.Elastic,
 ) {
 	lifecycle.Append(fx.Hook{
 		OnStart: func(context.Context) error {
