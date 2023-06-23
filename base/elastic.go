@@ -1,15 +1,35 @@
 package base
 
 import (
+	"crypto/tls"
+	"net"
+	"net/http"
+	"time"
+
 	"github.com/elastic/go-elasticsearch/v8"
 )
 
 type Elastic struct {
-	elastic *elasticsearch.Client
+	ElasticClient *elasticsearch.Client
 }
 
-func NewElasticsearch(logger Logger) Elastic {
-	es, err := elasticsearch.NewDefaultClient()
+func NewElasticsearch(env Env, logger Logger) Elastic {
+	cfg := elasticsearch.Config{
+		Addresses: []string{
+			env.ElasticHost,
+		},
+		Transport: &http.Transport{
+			MaxIdleConnsPerHost:   10,
+			ResponseHeaderTimeout: time.Second,
+			DialContext:           (&net.Dialer{Timeout: time.Second}).DialContext,
+			TLSClientConfig: &tls.Config{
+				MaxVersion:         tls.VersionTLS11,
+				InsecureSkipVerify: true,
+			},
+		},
+	}
+
+	es, err := elasticsearch.NewClient(cfg)
 	if err != nil {
 		logger.Zap.Error("Error creating the client: %s", err)
 	}
@@ -24,6 +44,6 @@ func NewElasticsearch(logger Logger) Elastic {
 	logger.Zap.Info("Connection success: %s", res)
 
 	return Elastic{
-		elastic: es,
+		ElasticClient: es,
 	}
 }
