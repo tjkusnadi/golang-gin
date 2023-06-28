@@ -12,3 +12,4 @@ Go Version: Go 1.20.4
 - Dependency Injection using [uber-go/fx](https://github.com/uber-go/fx)
 - Gin framework [gin-gonic](https://github.com/gin-gonic/gin)
 - Logger using uber-go/zap [uber-go/zap](https://github.com/uber-go/zap)
+- Elasticsearch client using go-elasticsearch [elastic/go-elasticsearch](github.com/elastic/go-elasticsearch/v8")
