@@ -23,5 +23,6 @@ func (esRoute ElasticRoute) Setup() {
 	elasticRoute := esRoute.router.Gin.Group("/elastic")
 	{
 		elasticRoute.GET("/info", esRoute.controller.GetInfo())
+		elasticRoute.POST("/index", esRoute.controller.CreateIndex())
 	}
 }

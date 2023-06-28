@@ -8,6 +8,7 @@ require (
 	github.com/spf13/viper v1.16.0
 	go.uber.org/fx v1.20.0
 	go.uber.org/zap v1.23.0
+	gopkg.in/validator.v2 v2.0.1
 )
 
 require (

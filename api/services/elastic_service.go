@@ -21,3 +21,7 @@ func NewElasticService(
 func (es ElasticService) GetInfo() (types.ElasticsearchVersionInfo, error) {
 	return es.repository.GetInfo()
 }
+
+func (es ElasticService) CreateIndex(indexName string) error {
+	return es.repository.CreateIndex(indexName)
+}

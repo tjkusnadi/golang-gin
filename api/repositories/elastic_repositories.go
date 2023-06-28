@@ -5,6 +5,7 @@ import (
 
 	"golang-gin/base"
 
+	"github.com/elastic/go-elasticsearch/v8/typedapi/indices/create"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
 )
 
@@ -34,4 +35,24 @@ func (er ElasticRepository) GetInfo() (types.ElasticsearchVersionInfo, error) {
 	}
 
 	return body.Version, nil
+}
+
+func (er ElasticRepository) CreateIndex(indexName string) error {
+	res, err := er.es.ElasticClient.Indices.Create(indexName).
+		Request(&create.Request{
+			Mappings: &types.TypeMapping{
+				Properties: map[string]types.Property{
+					"name": types.NewKeywordProperty(),
+				},
+			},
+		}).Do(context.Background())
+
+	if err != nil {
+		er.logger.Zap.Error("[ERROR] CreateIndex Elastic", err)
+		return err
+	}
+
+	er.logger.Zap.Info("res", res)
+
+	return nil
 }

@@ -14,7 +14,6 @@ services:
         published: 9200
     networks:
       - elastic
-
   kibana:
     image: kibana:8.2.2
     ports:
@@ -23,12 +22,10 @@ services:
     depends_on:
       - elasticsearch
     networks:
-      - elastic      
-
+      - elastic
 volumes:
   es_data:
     driver: local
-
 networks:
   elastic:
     name: elastic
