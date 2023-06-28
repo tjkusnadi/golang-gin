@@ -2,6 +2,8 @@ package services
 
 import (
 	"golang-gin/api/repositories"
+
+	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
 )
 
 type ElasticService struct {
@@ -16,6 +18,6 @@ func NewElasticService(
 	}
 }
 
-func (es ElasticService) GetInfo() (repositories.ElasticInfo, error) {
+func (es ElasticService) GetInfo() (types.ElasticsearchVersionInfo, error) {
 	return es.repository.GetInfo()
 }

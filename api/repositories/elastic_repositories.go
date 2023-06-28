@@ -1,23 +1,16 @@
 package repositories
 
 import (
-	"encoding/json"
-	"io"
+	"context"
 
 	"golang-gin/base"
+
+	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
 )
 
 type ElasticRepository struct {
 	es     base.Elastic
 	logger base.Logger
-}
-
-type ElasticVersion struct {
-	Number string `json:"number"`
-}
-
-type ElasticInfo struct {
-	Version ElasticVersion `json:"version"`
 }
 
 func NewElasticRepository(
@@ -30,27 +23,15 @@ func NewElasticRepository(
 	}
 }
 
-func (er ElasticRepository) GetInfo() (ElasticInfo, error) {
-	res, err := er.es.ElasticClient.Info()
+func (er ElasticRepository) GetInfo() (types.ElasticsearchVersionInfo, error) {
+	res := er.es.ElasticClient.Info()
 
-	var elasticInfo ElasticInfo
+	body, err := res.Do(context.Background())
 
 	if err != nil {
 		er.logger.Zap.Error("[ERROR] GetInfo Elastic", err)
-		return ElasticInfo{}, err
+		return body.Version, err
 	}
 
-	defer res.Body.Close()
-
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		er.logger.Zap.Error("[ERROR] GetInfo Elastic", err)
-		return ElasticInfo{}, err
-	}
-
-	json.Unmarshal(body, &elasticInfo)
-
-	return ElasticInfo{
-		Version: elasticInfo.Version,
-	}, nil
+	return body.Version, nil
 }

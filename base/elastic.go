@@ -1,6 +1,7 @@
 package base
 
 import (
+	"context"
 	"crypto/tls"
 	"net"
 	"net/http"
@@ -10,7 +11,7 @@ import (
 )
 
 type Elastic struct {
-	ElasticClient *elasticsearch.Client
+	ElasticClient *elasticsearch.TypedClient
 }
 
 func NewElasticsearch(env Env, logger Logger) Elastic {
@@ -29,19 +30,20 @@ func NewElasticsearch(env Env, logger Logger) Elastic {
 		},
 	}
 
-	es, err := elasticsearch.NewClient(cfg)
+	es, err := elasticsearch.NewTypedClient(cfg)
 	if err != nil {
 		logger.Zap.Error("Error creating the client: %s", err)
 	}
 
-	res, err := es.Info()
+	res := es.Info()
+
+	response, err := res.Do(context.Background())
+
 	if err != nil {
-		logger.Zap.Error("Error getting response: %s", err)
+		logger.Zap.Error("Error creating the client: %s", err)
 	}
 
-	defer res.Body.Close()
-
-	logger.Zap.Info("Connection success: %s", res)
+	logger.Zap.Info("Connection success:", response.Version)
 
 	return Elastic{
 		ElasticClient: es,
