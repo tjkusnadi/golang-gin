@@ -7,4 +7,5 @@ var Module = fx.Options(
 	fx.Provide(NewRouter),
 	fx.Provide(NewLogger),
 	fx.Provide(NewElasticsearch),
+	fx.Provide(NewPostgres),
 )

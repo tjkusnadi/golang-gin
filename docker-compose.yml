@@ -23,10 +23,27 @@ services:
       - elasticsearch
     networks:
       - elastic
+  postgres:
+    image: postgres:14.1-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres123
+    ports:
+      - target: 5432
+        published: 5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - postgres
 volumes:
   es_data:
+    driver: local
+  postgres:
     driver: local
 networks:
   elastic:
     name: elastic
+    driver: bridge
+  postgres:
+    name: postgres
     driver: bridge

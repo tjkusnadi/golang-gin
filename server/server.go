@@ -27,6 +27,7 @@ func Server(
 	routes routes.Routes,
 	logger base.Logger,
 	elastic base.Elastic,
+	postgres base.Postgres,
 	env base.Env,
 ) {
 	lifecycle.Append(fx.Hook{
