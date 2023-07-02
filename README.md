@@ -13,3 +13,4 @@ Go Version: Go 1.20.4
 - Gin framework [gin-gonic](https://github.com/gin-gonic/gin)
 - Logger using uber-go/zap [uber-go/zap](https://github.com/uber-go/zap)
 - Elasticsearch client using go-elasticsearch [elastic/go-elasticsearch](github.com/elastic/go-elasticsearch/v8")
+- Postgres Client using go-gorm [gorm](https://github.com/go-gorm/postgres)
